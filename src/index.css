@@ -1,0 +1,204 @@
+/* Importar fuentes de Google Fonts - Cormorant para elegancia serif */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@200;300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+/* Variables CSS personalizadas */
+:root {
+  --luxury-black: #0A0A0A;
+  --luxury-gold: #C9A961;
+  --luxury-cream: #F8F6F3;
+  --luxury-gray: #4A4A4A;
+}
+
+* {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+body {
+  background: linear-gradient(135deg, #FAFAFA 0%, #F5F5F5 100%);
+  color: var(--luxury-black);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* Botón principal elegante con gradiente y animación */
+.btn-primary {
+  background: linear-gradient(135deg, var(--luxury-black) 0%, #1a1a1a 100%);
+  color: #FFFFFF;
+  padding: 1rem 2rem;
+  border-radius: 0;
+  font-weight: 400;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 600ms;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Botón secundario con efecto de relleno */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--luxury-black);
+  border: 1.5px solid var(--luxury-black);
+  padding: 1rem 2rem;
+  border-radius: 0;
+  font-weight: 400;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: var(--luxury-black);
+  transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.btn-secondary:hover::before {
+  width: 100%;
+}
+
+.btn-secondary:hover {
+  color: #FFFFFF;
+  border-color: var(--luxury-black);
+}
+
+/* Input elegante minimalista */
+.input-elegant {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 0;
+  outline: none;
+  transition: all 300ms;
+  background-color: #FFFFFF;
+  font-size: 0.9375rem;
+  font-weight: 300;
+}
+
+.input-elegant:focus {
+  border-color: var(--luxury-black);
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.05);
+  background-color: #FAFAFA;
+}
+
+/* Card premium con sombra sofisticada */
+.card-premium {
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.card-premium:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Overlay oscuro elegante con gradiente mejorado */
+.overlay-dark {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      rgba(10, 10, 10, 0.3) 0%,
+      rgba(10, 10, 10, 0.5) 50%,
+      rgba(10, 10, 10, 0.7) 100%);
+}
+
+/* Animaciones personalizadas */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Línea decorativa dorada */
+.gold-line {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--luxury-gold) 0%, transparent 100%);
+  margin: 1rem 0;
+}
+
+/* Animación Shimmer para botones */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
+}
