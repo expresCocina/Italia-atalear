@@ -153,14 +153,14 @@ export default function VideoShowcase() {
                         {videoList.map((videoUrl, index) => (
                             <div
                                 key={index}
-                                className="flex-shrink-0 w-full md:w-[calc(100%-2rem)] animate-fade-in-up"
+                                className="flex-shrink-0 w-full md:w-auto md:max-w-4xl mx-auto animate-fade-in-up"
                                 style={{ animationDelay: `${index * 100}ms` }}
                             >
                                 <div className="group relative rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 bg-black">
                                     <video
                                         src={videoUrl}
                                         controls
-                                        className="w-full h-[300px] md:h-[500px] object-cover"
+                                        className="w-full h-[300px] md:h-[600px] object-contain"
                                         preload="metadata"
                                     >
                                         Tu navegador no soporta el elemento de video.
