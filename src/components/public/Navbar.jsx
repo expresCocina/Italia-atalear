@@ -93,43 +93,54 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - Mejorado */}
       <div
-        className={`fixed inset-0 bg-black/95 backdrop-blur-xl z-40 transition-transform duration-500 md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed top-0 left-0 right-0 bg-white/98 backdrop-blur-xl z-40 transition-all duration-500 md:hidden shadow-2xl ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
           }`}
-        style={{ top: '0' }}
+        style={{ paddingTop: isScrolled ? '80px' : '100px' }}
       >
-        <button
-          onClick={() => setIsMobileMenuOpen(false)}
-          className="absolute top-6 right-4 text-white p-2"
-        >
-          <X className="w-8 h-8" />
-        </button>
+        <div className="px-6 py-8 space-y-6">
+          {navLinks.map((link, index) => (
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-center text-gray-900 text-lg uppercase tracking-widest font-light hover:text-luxury-gold transition-all py-3 border-b border-gray-100 last:border-0"
+              style={{
+                animationDelay: `${index * 100}ms`,
+                animation: isMobileMenuOpen ? 'fadeInDown 0.5s ease-out forwards' : 'none'
+              }}
+            >
+              {link.name}
+            </a>
+          ))}
 
-        <div className="text-center mb-8">
-          <h2 className="font-serif text-4xl text-white tracking-widest uppercase mb-2">Italia Atelier</h2>
-          <p className="text-white/50 text-xs tracking-[0.4em] uppercase">Luxury Tailoring</p>
+          {/* Action Button */}
+          <div className="pt-4">
+            <Link
+              to="/login"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-3 px-6 bg-black text-white rounded-sm hover:bg-gray-800 transition-colors"
+            >
+              <User className="w-5 h-5" />
+              <span className="text-sm uppercase tracking-wider">Acceder</span>
+            </Link>
+          </div>
         </div>
-
-        {navLinks.map((link) => (
-          <a
-            key={link.name}
-            href={link.href}
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="text-white text-xl uppercase tracking-widest font-light hover:text-luxury-gold transition-colors"
-          >
-            {link.name}
-          </a>
-        ))}
-
-        <Link
-          to="/login"
-          onClick={() => setIsMobileMenuOpen(false)}
-          className="mt-8 px-8 py-3 border border-white/20 text-white text-sm uppercase tracking-widest hover:bg-white hover:text-black transition-all"
-        >
-          Acceso Clientes
-        </Link>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeInDown {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </nav>
   )
 }
