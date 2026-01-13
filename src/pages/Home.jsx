@@ -5,6 +5,7 @@
 
 import Navbar from '../components/public/Navbar'
 import Hero from '../components/public/Hero'
+import VideoShowcase from '../components/public/VideoShowcase'
 import Catalog from '../components/public/Catalog'
 import About from '../components/public/About'
 import StoreInfo from '../components/public/StoreInfo'
@@ -15,6 +16,7 @@ export default function Home() {
         <main className="min-h-screen">
             <Navbar />
             <Hero />
+            <VideoShowcase />
             <Catalog />
             <About />
             <StoreInfo />
