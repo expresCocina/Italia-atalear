@@ -131,7 +131,7 @@ export default function Catalog() {
                         {/* Contenedor de scroll */}
                         <div
                             ref={scrollContainerRef}
-                            className="flex gap-8 overflow-x-auto scrollbar-hide scroll-smooth px-4"
+                            className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-4"
                             style={{
                                 scrollbarWidth: 'none',
                                 msOverflowStyle: 'none',
@@ -140,7 +140,7 @@ export default function Catalog() {
                             {filteredProducts.map((product, index) => (
                                 <div
                                     key={product.id}
-                                    className="flex-shrink-0 w-[350px] animate-fade-in-up"
+                                    className="flex-shrink-0 w-[280px] animate-fade-in-up"
                                     style={{ animationDelay: `${index * 100}ms` }}
                                 >
                                     <ProductCard product={product} />

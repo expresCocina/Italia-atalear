@@ -7,12 +7,14 @@ import { useEffect, useState } from 'react'
 import { MapPin, Clock, Instagram, Phone, ArrowUp, Facebook } from 'lucide-react'
 import { getSetting } from '../../lib/supabase'
 import { Link } from 'react-router-dom'
+import { Music2 } from 'lucide-react'
 
 export default function StoreInfo() {
-    const [address, setAddress] = useState('Ak 15 #119-11 Local 207, Usaquén, Bogotá')
+    const [address, setAddress] = useState('Carrera 15 N 119-59 Local 207, Edificio Uni Rueda, Usaquén, Bogotá')
     const [hours, setHours] = useState('11:00 a.m. – 7:00 p.m.')
     const [instagram, setInstagram] = useState('https://instagram.com/italiaatelier')
     const [facebook, setFacebook] = useState('https://facebook.com/italiaatelier')
+    const [tiktok, setTiktok] = useState('https://www.tiktok.com/@italiatelier')
     const [whatsapp, setWhatsapp] = useState('573001234567')
 
     useEffect(() => {
@@ -20,12 +22,13 @@ export default function StoreInfo() {
     }, [])
 
     const loadStoreInfo = async () => {
-        const [addressData, hoursData, instagramData, whatsappData, facebookData] = await Promise.all([
+        const [addressData, hoursData, instagramData, whatsappData, facebookData, tiktokData] = await Promise.all([
             getSetting('store_address'),
             getSetting('store_hours'),
             getSetting('instagram_url'),
             getSetting('whatsapp_number'),
-            getSetting('facebook_url')
+            getSetting('facebook_url'),
+            getSetting('tiktok_url')
         ])
 
         if (addressData?.data?.value) setAddress(addressData.data.value)
@@ -33,6 +36,7 @@ export default function StoreInfo() {
         if (instagramData?.data?.value) setInstagram(instagramData.data.value)
         if (whatsappData?.data?.value) setWhatsapp(whatsappData.data.value)
         if (facebookData?.data?.value) setFacebook(facebookData.data.value)
+        if (tiktokData?.data?.value) setTiktok(tiktokData.data.value)
     }
 
     const scrollToTop = () => {
