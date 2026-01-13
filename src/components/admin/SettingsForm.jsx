@@ -6,6 +6,7 @@
 import { useState, useEffect } from 'react'
 import { Save, Loader2 } from 'lucide-react'
 import { getSetting, updateSetting } from '../../lib/supabase'
+import VideoUpload from './VideoUpload'
 
 export default function SettingsForm() {
     const [settings, setSettings] = useState({
@@ -14,7 +15,9 @@ export default function SettingsForm() {
         whatsapp_number: '',
         instagram_url: '',
         facebook_url: '',
-        tiktok_url: ''
+        tiktok_url: '',
+        video_1_url: '',
+        video_2_url: ''
     })
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
@@ -54,7 +57,7 @@ export default function SettingsForm() {
 
         try {
             const updates = Object.entries(settings).map(([key, value]) =>
-                updateSetting(key, value, 'text', `Configuración de ${key}`)
+                updateSetting(key, value, 'url', `Configuración de ${key}`)
             )
 
             await Promise.all(updates)
@@ -76,7 +79,7 @@ export default function SettingsForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-3xl">
+        <form onSubmit={handleSubmit} className="max-w-3xl space-y-8">
             {message.text && (
                 <div className={`mb-6 p-4 rounded-lg ${message.type === 'success'
                         ? 'bg-green-50 text-green-800 border border-green-200'
@@ -86,94 +89,128 @@ export default function SettingsForm() {
                 </div>
             )}
 
-            {/* WhatsApp */}
-            <div className="mb-6">
-                <label htmlFor="whatsapp_number" className="block text-sm font-medium mb-2">
-                    Número de WhatsApp
-                </label>
-                <input
-                    id="whatsapp_number"
-                    type="tel"
-                    value={settings.whatsapp_number || ''}
-                    onChange={(e) => setSettings({ ...settings, whatsapp_number: e.target.value })}
-                    className="input-elegant"
-                    placeholder="+57 322 210 2194"
-                />
+            {/* Sección de Información de Contacto */}
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="text-lg font-serif font-medium mb-6">Información de Contacto</h3>
+
+                {/* WhatsApp */}
+                <div className="mb-6">
+                    <label htmlFor="whatsapp_number" className="block text-sm font-medium mb-2">
+                        Número de WhatsApp
+                    </label>
+                    <input
+                        id="whatsapp_number"
+                        type="tel"
+                        value={settings.whatsapp_number || ''}
+                        onChange={(e) => setSettings({ ...settings, whatsapp_number: e.target.value })}
+                        className="input-elegant"
+                        placeholder="+57 322 210 2194"
+                    />
+                </div>
+
+                {/* Dirección */}
+                <div className="mb-6">
+                    <label htmlFor="store_address" className="block text-sm font-medium mb-2">
+                        Dirección de la Tienda
+                    </label>
+                    <input
+                        id="store_address"
+                        type="text"
+                        value={settings.store_address || ''}
+                        onChange={(e) => setSettings({ ...settings, store_address: e.target.value })}
+                        className="input-elegant"
+                        placeholder="Carrera 15 N 119-59 Local 207, Edificio Uni Rueda"
+                    />
+                </div>
+
+                {/* Horario */}
+                <div className="mb-6">
+                    <label htmlFor="store_hours" className="block text-sm font-medium mb-2">
+                        Horario de Atención
+                    </label>
+                    <input
+                        id="store_hours"
+                        type="text"
+                        value={settings.store_hours || ''}
+                        onChange={(e) => setSettings({ ...settings, store_hours: e.target.value })}
+                        className="input-elegant"
+                        placeholder="Lun - Sáb: 9:00 AM - 7:00 PM"
+                    />
+                </div>
             </div>
 
-            {/* Dirección */}
-            <div className="mb-6">
-                <label htmlFor="store_address" className="block text-sm font-medium mb-2">
-                    Dirección de la Tienda
-                </label>
-                <input
-                    id="store_address"
-                    type="text"
-                    value={settings.store_address || ''}
-                    onChange={(e) => setSettings({ ...settings, store_address: e.target.value })}
-                    className="input-elegant"
-                    placeholder="Carrera 15 N 119-59 Local 207, Edificio Uni Rueda"
-                />
+            {/* Sección de Redes Sociales */}
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="text-lg font-serif font-medium mb-6">Redes Sociales</h3>
+
+                {/* Instagram */}
+                <div className="mb-6">
+                    <label htmlFor="instagram_url" className="block text-sm font-medium mb-2">
+                        URL de Instagram
+                    </label>
+                    <input
+                        id="instagram_url"
+                        type="url"
+                        value={settings.instagram_url || ''}
+                        onChange={(e) => setSettings({ ...settings, instagram_url: e.target.value })}
+                        className="input-elegant"
+                        placeholder="https://instagram.com/italiaatelier"
+                    />
+                </div>
+
+                {/* Facebook */}
+                <div className="mb-6">
+                    <label htmlFor="facebook_url" className="block text-sm font-medium mb-2">
+                        URL de Facebook
+                    </label>
+                    <input
+                        id="facebook_url"
+                        type="url"
+                        value={settings.facebook_url || ''}
+                        onChange={(e) => setSettings({ ...settings, facebook_url: e.target.value })}
+                        className="input-elegant"
+                        placeholder="https://facebook.com/italiaatelier"
+                    />
+                </div>
+
+                {/* TikTok */}
+                <div className="mb-6">
+                    <label htmlFor="tiktok_url" className="block text-sm font-medium mb-2">
+                        URL de TikTok
+                    </label>
+                    <input
+                        id="tiktok_url"
+                        type="url"
+                        value={settings.tiktok_url || ''}
+                        onChange={(e) => setSettings({ ...settings, tiktok_url: e.target.value })}
+                        className="input-elegant"
+                        placeholder="https://www.tiktok.com/@italiatelier"
+                    />
+                </div>
             </div>
 
-            {/* Horario */}
-            <div className="mb-6">
-                <label htmlFor="store_hours" className="block text-sm font-medium mb-2">
-                    Horario de Atención
-                </label>
-                <input
-                    id="store_hours"
-                    type="text"
-                    value={settings.store_hours || ''}
-                    onChange={(e) => setSettings({ ...settings, store_hours: e.target.value })}
-                    className="input-elegant"
-                    placeholder="Lun - Sáb: 9:00 AM - 7:00 PM"
-                />
-            </div>
+            {/* Sección de Videos */}
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="text-lg font-serif font-medium mb-6">Galería de Videos</h3>
+                <p className="text-sm text-gray-600 mb-6">
+                    Sube hasta 2 videos para mostrar en la página principal. Formatos aceptados: MP4, WebM, MOV (máx. 50MB cada uno).
+                </p>
 
-            {/* Instagram */}
-            <div className="mb-6">
-                <label htmlFor="instagram_url" className="block text-sm font-medium mb-2">
-                    URL de Instagram
-                </label>
-                <input
-                    id="instagram_url"
-                    type="url"
-                    value={settings.instagram_url || ''}
-                    onChange={(e) => setSettings({ ...settings, instagram_url: e.target.value })}
-                    className="input-elegant"
-                    placeholder="https://instagram.com/italiaatelier"
-                />
-            </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Video 1 */}
+                    <VideoUpload
+                        videoUrl={settings.video_1_url}
+                        onVideoChange={(url) => setSettings({ ...settings, video_1_url: url })}
+                        label="Video 1"
+                    />
 
-            {/* Facebook */}
-            <div className="mb-6">
-                <label htmlFor="facebook_url" className="block text-sm font-medium mb-2">
-                    URL de Facebook
-                </label>
-                <input
-                    id="facebook_url"
-                    type="url"
-                    value={settings.facebook_url || ''}
-                    onChange={(e) => setSettings({ ...settings, facebook_url: e.target.value })}
-                    className="input-elegant"
-                    placeholder="https://facebook.com/italiaatelier"
-                />
-            </div>
-
-            {/* TikTok */}
-            <div className="mb-6">
-                <label htmlFor="tiktok_url" className="block text-sm font-medium mb-2">
-                    URL de TikTok
-                </label>
-                <input
-                    id="tiktok_url"
-                    type="url"
-                    value={settings.tiktok_url || ''}
-                    onChange={(e) => setSettings({ ...settings, tiktok_url: e.target.value })}
-                    className="input-elegant"
-                    placeholder="https://www.tiktok.com/@italiatelier"
-                />
+                    {/* Video 2 */}
+                    <VideoUpload
+                        videoUrl={settings.video_2_url}
+                        onVideoChange={(url) => setSettings({ ...settings, video_2_url: url })}
+                        label="Video 2"
+                    />
+                </div>
             </div>
 
             {/* Botón Guardar */}
