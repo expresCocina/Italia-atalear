@@ -4,10 +4,9 @@
  */
 
 import { useEffect, useState } from 'react'
-import { MapPin, Clock, Instagram, Phone, ArrowUp, Facebook } from 'lucide-react'
+import { MapPin, Clock, Instagram, Phone, ArrowUp, Facebook, Music2 } from 'lucide-react'
 import { getSetting } from '../../lib/supabase'
 import { Link } from 'react-router-dom'
-import { Music2 } from 'lucide-react'
 
 export default function StoreInfo() {
     const [address, setAddress] = useState('Carrera 15 N 119-59 Local 207, Edificio Uni Rueda, Usaquén, Bogotá')
@@ -125,6 +124,18 @@ export default function StoreInfo() {
                                     <Facebook className="w-5 h-5" />
                                 </div>
                                 <span className="font-light">Facebook</span>
+                            </a>
+
+                            <a
+                                href={tiktok}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-4 text-gray-400 hover:text-white transition-all group"
+                            >
+                                <div className="w-10 h-10 border border-white/10 rounded-full flex items-center justify-center group-hover:border-white/40 transition-colors">
+                                    <Music2 className="w-5 h-5" />
+                                </div>
+                                <span className="font-light">TikTok</span>
                             </a>
                         </div>
                     </div>

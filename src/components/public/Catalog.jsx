@@ -89,13 +89,13 @@ export default function Catalog() {
                     </p>
                 </div>
 
-                {/* Filtros de categoría */}
+                {/* Filtros de categoría - MEJORADO PARA MÓVIL */}
                 {categories.length > 0 && (
-                    <div className="flex flex-wrap justify-center gap-4 mb-16">
+                    <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-16 px-2">
                         <button
                             onClick={() => setSelectedCategory('all')}
-                            className={`px-8 py-3 transition-all duration-400 uppercase text-sm tracking-widest font-light ${selectedCategory === 'all'
-                                ? 'bg-black text-white'
+                            className={`px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 transition-all duration-400 uppercase text-xs sm:text-sm tracking-wider sm:tracking-widest font-light rounded-md ${selectedCategory === 'all'
+                                ? 'bg-black text-white shadow-lg'
                                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                                 }`}
                         >
@@ -105,12 +105,13 @@ export default function Catalog() {
                             <button
                                 key={category.id}
                                 onClick={() => setSelectedCategory(category.id)}
-                                className={`px-8 py-3 transition-all duration-400 uppercase text-sm tracking-widest font-light ${selectedCategory === category.id
-                                    ? 'bg-black text-white'
+                                className={`px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 transition-all duration-400 uppercase text-xs sm:text-sm tracking-wider sm:tracking-widest font-light rounded-md ${selectedCategory === category.id
+                                    ? 'bg-black text-white shadow-lg'
                                     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                                     }`}
                             >
-                                {category.nombre}
+                                <span className="hidden sm:inline">{category.nombre}</span>
+                                <span className="sm:hidden">{category.nombre.split(' ')[0]}</span>
                             </button>
                         ))}
                     </div>
