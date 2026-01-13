@@ -224,78 +224,85 @@ export default function ProductCard({ product }) {
                 </div>
             </div>
 
-            {/* Modal de Zoom */}
+            {/* Modal de Zoom Mejorado */}
             {showModal && (
                 <div
-                    className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 animate-fade-in"
+                    className="fixed inset-0 bg-black/97 z-50 flex items-center justify-center animate-fade-in"
                     onClick={closeModal}
                 >
-                    {/* Botón cerrar */}
+                    {/* Botón cerrar elegante */}
                     <button
                         onClick={closeModal}
-                        className="absolute top-6 right-6 bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors z-10"
+                        className="absolute top-4 right-4 md:top-6 md:right-6 bg-white/10 hover:bg-white/20 p-2 md:p-3 rounded-full transition-all hover:scale-110 z-20"
                         aria-label="Cerrar"
                     >
-                        <X className="w-6 h-6 text-white" />
+                        <X className="w-5 h-5 md:w-6 md:h-6 text-white" />
                     </button>
 
-                    {/* Contenedor de imagen */}
-                    <div className="relative max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
-                        {/* Imagen ampliada */}
-                        <img
-                            src={images[currentImageIndex]}
-                            alt={`${product.nombre} - Imagen ${currentImageIndex + 1}`}
-                            className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
-                        />
+                    {/* Contenedor de imagen centrado */}
+                    <div className="relative w-full h-full flex items-center justify-center p-4 md:p-8" onClick={(e) => e.stopPropagation()}>
+                        {/* Imagen ampliada con mejor proporción */}
+                        <div className="relative max-w-4xl w-full">
+                            <img
+                                src={images[currentImageIndex]}
+                                alt={`${product.nombre} - Imagen ${currentImageIndex + 1}`}
+                                className="w-full h-auto max-h-[85vh] object-contain rounded-lg shadow-2xl"
+                            />
 
-                        {/* Navegación en modal */}
-                        {images.length > 1 && (
-                            <>
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
-                                    }}
-                                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-4 rounded-full shadow-xl transition-all hover:scale-110"
-                                >
-                                    <ChevronLeft className="w-6 h-6 text-gray-900" />
-                                </button>
+                            {/* Navegación en modal - más sutil */}
+                            {images.length > 1 && (
+                                <>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
+                                        }}
+                                        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 md:p-3 rounded-full shadow-xl transition-all hover:scale-110"
+                                    >
+                                        <ChevronLeft className="w-4 h-4 md:w-5 md:h-5 text-gray-900" />
+                                    </button>
 
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        setCurrentImageIndex((prev) => (prev + 1) % images.length)
-                                    }}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-4 rounded-full shadow-xl transition-all hover:scale-110"
-                                >
-                                    <ChevronRight className="w-6 h-6 text-gray-900" />
-                                </button>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            setCurrentImageIndex((prev) => (prev + 1) % images.length)
+                                        }}
+                                        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 md:p-3 rounded-full shadow-xl transition-all hover:scale-110"
+                                    >
+                                        <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-gray-900" />
+                                    </button>
+                                </>
+                            )}
+                        </div>
 
-                                {/* Indicadores en modal */}
-                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3">
-                                    {images.map((_, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                setCurrentImageIndex(index)
-                                            }}
-                                            className={`transition-all duration-300 rounded-full ${index === currentImageIndex
-                                                    ? 'bg-white w-10 h-3'
-                                                    : 'bg-white/60 hover:bg-white/80 w-3 h-3'
-                                                }`}
-                                        />
-                                    ))}
-                                </div>
-                            </>
-                        )}
-
-                        {/* Info del producto en modal */}
-                        <div className="absolute top-6 left-6 bg-black/60 backdrop-blur-sm text-white px-6 py-3 rounded-lg">
-                            <p className="font-serif text-lg">{product.nombre}</p>
-                            <p className="text-sm text-white/80 mt-1">
-                                {currentImageIndex + 1} de {images.length}
-                            </p>
+                        {/* Info del producto - posición fija abajo */}
+                        <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-md text-white px-6 py-3 rounded-full shadow-xl max-w-[90%]">
+                            <div className="flex items-center gap-3 md:gap-4 flex-wrap justify-center">
+                                <p className="font-serif text-sm md:text-base">{product.nombre}</p>
+                                {images.length > 1 && (
+                                    <>
+                                        <div className="hidden md:block w-px h-4 bg-white/30"></div>
+                                        <div className="flex gap-1.5">
+                                            {images.map((_, index) => (
+                                                <button
+                                                    key={index}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        setCurrentImageIndex(index)
+                                                    }}
+                                                    className={`transition-all duration-300 rounded-full ${index === currentImageIndex
+                                                            ? 'bg-white w-6 h-2'
+                                                            : 'bg-white/40 hover:bg-white/60 w-2 h-2'
+                                                        }`}
+                                                />
+                                            ))}</div>
+                                        <div className="hidden md:block w-px h-4 bg-white/30"></div>
+                                        <p className="text-xs md:text-sm text-white/80">
+                                            {currentImageIndex + 1}/{images.length}
+                                        </p>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
