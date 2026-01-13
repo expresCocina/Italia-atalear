@@ -1,14 +1,23 @@
 /**
  * Product Card
- * Tarjeta de producto premium con diseño mejorado y botón de WhatsApp
+ * Tarjeta de producto premium con carrusel de imágenes
  */
 
 import { useEffect, useState } from 'react'
-import { MessageCircle, Eye } from 'lucide-react'
+import { MessageCircle, Eye, ChevronLeft, ChevronRight } from 'lucide-react'
 import { getSetting } from '../../lib/supabase'
 
 export default function ProductCard({ product }) {
     const [whatsappNumber, setWhatsappNumber] = useState('573001234567')
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+    // Crear array de imágenes disponibles
+    const images = [
+        product.imagen_url,
+        product.imagen_url_2,
+        product.imagen_url_3,
+        product.imagen_url_4
+    ].filter(Boolean) // Filtrar solo las que existen
 
     useEffect(() => {
         loadWhatsappNumber()
@@ -27,15 +36,31 @@ export default function ProductCard({ product }) {
         window.open(url, '_blank')
     }
 
+    const nextImage = (e) => {
+        e.stopPropagation()
+        setCurrentImageIndex((prev) => (prev + 1) % images.length)
+    }
+
+    const prevImage = (e) => {
+        e.stopPropagation()
+        setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
+    }
+
+    const goToImage = (index, e) => {
+        e.stopPropagation()
+        setCurrentImageIndex(index)
+    }
+
     return (
         <div className="card-premium group cursor-pointer">
-            {/* Imagen con overlay al hover */}
+            {/* Carrusel de Imágenes */}
             <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                {product.imagen_url ? (
+                {images.length > 0 ? (
                     <>
+                        {/* Imagen actual */}
                         <img
-                            src={product.imagen_url}
-                            alt={product.nombre}
+                            src={images[currentImageIndex]}
+                            alt={`${product.nombre} - Imagen ${currentImageIndex + 1}`}
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
 
@@ -45,6 +70,47 @@ export default function ProductCard({ product }) {
                                 <Eye className="w-12 h-12 text-white" />
                             </div>
                         </div>
+
+                        {/* Botones de navegación (solo si hay más de 1 imagen) */}
+                        {images.length > 1 && (
+                            <>
+                                <button
+                                    onClick={prevImage}
+                                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                    aria-label="Imagen anterior"
+                                >
+                                    <ChevronLeft className="w-4 h-4 text-gray-900" />
+                                </button>
+
+                                <button
+                                    onClick={nextImage}
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                    aria-label="Siguiente imagen"
+                                >
+                                    <ChevronRight className="w-4 h-4 text-gray-900" />
+                                </button>
+
+                                {/* Indicadores de posición (dots) */}
+                                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                                    {images.map((_, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={(e) => goToImage(index, e)}
+                                            className={`w-2 h-2 rounded-full transition-all ${index === currentImageIndex
+                                                    ? 'bg-white w-6'
+                                                    : 'bg-white/50 hover:bg-white/75'
+                                                }`}
+                                            aria-label={`Ir a imagen ${index + 1}`}
+                                        />
+                                    ))}
+                                </div>
+
+                                {/* Contador de imágenes */}
+                                <div className="absolute top-4 right-4 bg-black/60 text-white text-xs px-2 py-1 rounded-full">
+                                    {currentImageIndex + 1}/{images.length}
+                                </div>
+                            </>
+                        )}
                     </>
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-50">
