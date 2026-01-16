@@ -5,6 +5,7 @@
 
 import { useState } from 'react'
 import { MessageCircle, X } from 'lucide-react'
+import { trackContact } from '../../lib/fbPixel'
 
 export default function WhatsAppButton() {
     const [isHovered, setIsHovered] = useState(false)
@@ -12,6 +13,9 @@ export default function WhatsAppButton() {
     const message = 'Hola, me gustaría obtener más información sobre Italia Atelier'
 
     const handleClick = () => {
+        // Track Contact event
+        trackContact('whatsapp')
+
         const url = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`
         window.open(url, '_blank', 'noopener,noreferrer')
     }

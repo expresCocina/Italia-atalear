@@ -3,6 +3,8 @@
  * Funciones para tracking de eventos con Facebook Pixel
  */
 
+import { capiContact } from './fbCapi';
+
 /**
  * Track ViewContent event
  */
@@ -98,4 +100,24 @@ export const trackSearch = (searchQuery) => {
     window.fbq('track', 'Search', {
         search_string: searchQuery
     });
+};
+
+/**
+ * Track Contact event
+ * Envía tanto a Pixel como a CAPI para asegurar que no se pierda
+ */
+export const trackContact = (method = 'whatsapp') => {
+    if (typeof window.fbq === 'undefined') return;
+
+    const eventId = `contact_${method}_${Date.now()}`;
+
+    // Enviar a Pixel (browser)
+    window.fbq('track', 'Contact', {
+        contact_method: method
+    }, { eventID: eventId });
+
+    // Enviar a CAPI (server-side) para redundancia
+    capiContact(method, eventId);
+
+    return eventId;
 };

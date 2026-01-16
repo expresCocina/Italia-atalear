@@ -6,6 +6,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { MessageCircle, ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react'
 import { getSetting } from '../../lib/supabase'
+import { trackContact } from '../../lib/fbPixel'
 
 export default function ProductCard({ product }) {
     const [whatsappNumber, setWhatsappNumber] = useState('573001234567')
@@ -58,6 +59,9 @@ export default function ProductCard({ product }) {
     }
 
     const handleWhatsAppClick = () => {
+        // Track Contact event
+        trackContact('whatsapp_product')
+
         const message = `Hola, estoy interesado en el producto: ${product.nombre}`
         const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
         window.open(url, '_blank')
@@ -115,8 +119,8 @@ export default function ProductCard({ product }) {
                                         src={img}
                                         alt={`${product.nombre} - Imagen ${index + 1}`}
                                         className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${index === currentImageIndex
-                                                ? 'opacity-100 scale-100'
-                                                : 'opacity-0 scale-105'
+                                            ? 'opacity-100 scale-100'
+                                            : 'opacity-0 scale-105'
                                             } group-hover:scale-110`}
                                     />
                                 ))}
@@ -157,8 +161,8 @@ export default function ProductCard({ product }) {
                                                 key={index}
                                                 onClick={(e) => goToImage(index, e)}
                                                 className={`transition-all duration-300 rounded-full ${index === currentImageIndex
-                                                        ? 'bg-white w-8 h-2'
-                                                        : 'bg-white/60 hover:bg-white/80 w-2 h-2'
+                                                    ? 'bg-white w-8 h-2'
+                                                    : 'bg-white/60 hover:bg-white/80 w-2 h-2'
                                                     }`}
                                                 aria-label={`Ir a imagen ${index + 1}`}
                                             />
@@ -291,8 +295,8 @@ export default function ProductCard({ product }) {
                                                         setCurrentImageIndex(index)
                                                     }}
                                                     className={`transition-all duration-300 rounded-full ${index === currentImageIndex
-                                                            ? 'bg-white w-6 h-2'
-                                                            : 'bg-white/40 hover:bg-white/60 w-2 h-2'
+                                                        ? 'bg-white w-6 h-2'
+                                                        : 'bg-white/40 hover:bg-white/60 w-2 h-2'
                                                         }`}
                                                 />
                                             ))}</div>
