@@ -3,7 +3,7 @@
  * Envía eventos al servidor de Facebook a través de Supabase Edge Function
  */
 
-import { supabase } from './supabase';
+import { supabase } from './supabase.js';
 
 /**
  * Envía evento a Facebook Conversions API vía Edge Function
