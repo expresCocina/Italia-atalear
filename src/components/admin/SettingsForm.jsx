@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react'
 import { Save, Loader2 } from 'lucide-react'
-import { getSetting, updateSetting } from '../../lib/supabase'
+import { getSetting, upsertSetting } from '../../lib/supabase'
 import VideoUpload from './VideoUpload'
 
 export default function SettingsForm() {
@@ -56,8 +56,9 @@ export default function SettingsForm() {
         setMessage({ type: '', text: '' })
 
         try {
+            // Usar upsertSetting para crear o actualizar
             const updates = Object.entries(settings).map(([key, value]) =>
-                updateSetting(key, value, 'url', `Configuración de ${key}`)
+                upsertSetting(key, value, 'text', `Configuración de ${key}`)
             )
 
             await Promise.all(updates)
@@ -82,8 +83,8 @@ export default function SettingsForm() {
         <form onSubmit={handleSubmit} className="max-w-3xl space-y-8">
             {message.text && (
                 <div className={`mb-6 p-4 rounded-lg ${message.type === 'success'
-                        ? 'bg-green-50 text-green-800 border border-green-200'
-                        : 'bg-red-50 text-red-800 border border-red-200'
+                    ? 'bg-green-50 text-green-800 border border-green-200'
+                    : 'bg-red-50 text-red-800 border border-red-200'
                     }`}>
                     {message.text}
                 </div>

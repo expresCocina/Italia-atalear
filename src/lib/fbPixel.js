@@ -104,20 +104,20 @@ export const trackSearch = (searchQuery) => {
 
 /**
  * Track Contact event
- * Envía tanto a Pixel como a CAPI para asegurar que no se pierda
+ * Solo Pixel por ahora - CAPI desactivado temporalmente
  */
 export const trackContact = (method = 'whatsapp') => {
     if (typeof window.fbq === 'undefined') return;
-
+    
     const eventId = `contact_${method}_${Date.now()}`;
-
+    
     // Enviar a Pixel (browser)
     window.fbq('track', 'Contact', {
         contact_method: method
     }, { eventID: eventId });
-
-    // Enviar a CAPI (server-side) para redundancia
-    capiContact(method, eventId);
-
+    
+    // CAPI desactivado temporalmente - descomentar cuando esté configurado
+    // capiContact(method, eventId);
+    
     return eventId;
 };
