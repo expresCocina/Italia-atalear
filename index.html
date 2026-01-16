@@ -4,7 +4,44 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>italia-atelier</title>
+    <title>Italia Atelier</title>
+
+    <!-- Facebook Parameter Generator + Meta Pixel Code -->
+    <script>
+      // Facebook Parameter Generator - Captura fbclid y genera cookies FBC/FBP
+      (function () {
+        // Generar _fbp cookie si no existe
+        if (!document.cookie.match(/_fbp=/)) {
+          var fbp = 'fb.1.' + Date.now() + '.' + Math.random().toString(36).substring(2);
+          document.cookie = '_fbp=' + fbp + ';path=/;max-age=7776000'; // 90 días
+        }
+
+        // Capturar fbclid de la URL y generar _fbc cookie
+        var fbclid = new URLSearchParams(window.location.search).get('fbclid');
+        if (fbclid) {
+          var fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+          document.cookie = '_fbc=' + fbc + ';path=/;max-age=7776000'; // 90 días
+        }
+      })();
+
+      // Meta Pixel Code
+      !function (f, b, e, v, n, t, s) {
+        if (f.fbq) return; n = f.fbq = function () {
+          n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+        };
+        if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+        n.queue = []; t = b.createElement(e); t.async = !0;
+        t.src = v; s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s)
+      }(window, document, 'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1957021604606831');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=1957021604606831&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
   </head>
   <body>
     <div id="root"></div>
