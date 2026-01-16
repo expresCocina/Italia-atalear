@@ -12,7 +12,7 @@ export default function StoreInfo() {
     const [address, setAddress] = useState('Carrera 15 N 119-59 Local 207, Edificio Uni Rueda, Usaquén, Bogotá')
     const [hours, setHours] = useState('11:00 a.m. – 7:00 p.m.')
     const [instagram, setInstagram] = useState('https://instagram.com/italiaatelier')
-    const [facebook, setFacebook] = useState('https://facebook.com/italiaatelier')
+    const [facebook, setFacebook] = useState('https://www.facebook.com/italia.atelier.2025/')
     const [tiktok, setTiktok] = useState('https://www.tiktok.com/@italiatelier')
     const [whatsapp, setWhatsapp] = useState('573001234567')
 
