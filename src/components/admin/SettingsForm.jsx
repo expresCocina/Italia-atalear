@@ -56,16 +56,27 @@ export default function SettingsForm() {
         setMessage({ type: '', text: '' })
 
         try {
+            console.log('Guardando configuración:', settings) // Debug
+
             // Usar upsertSetting para crear o actualizar
             const updates = Object.entries(settings).map(([key, value]) =>
                 upsertSetting(key, value, 'text', `Configuración de ${key}`)
             )
 
-            await Promise.all(updates)
+            const results = await Promise.all(updates)
+
+            // Verificar si hubo errores en alguna de las operaciones
+            const errors = results.filter(r => r.error).map(r => r.error)
+
+            if (errors.length > 0) {
+                console.error('Errores al guardar:', errors)
+                throw new Error(errors[0].message || 'Error al guardar algunos campos')
+            }
+
             setMessage({ type: 'success', text: '✓ Configuración guardada exitosamente' })
         } catch (error) {
             console.error('Error saving settings:', error)
-            setMessage({ type: 'error', text: 'Error al guardar configuración' })
+            setMessage({ type: 'error', text: `Error: ${error.message}` })
         } finally {
             setSaving(false)
         }
