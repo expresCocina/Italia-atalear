@@ -241,7 +241,7 @@ export const updateSetting = async (key, value) => {
 export const upsertSetting = async (key, value, tipo = 'text', descripcion = '') => {
     const { data, error } = await supabase
         .from('settings')
-        .upsert({ key, value, tipo, descripcion })
+        .upsert({ key, value, tipo, descripcion }, { onConflict: 'key' })
         .select()
 
     return { data, error }
