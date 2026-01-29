@@ -12,6 +12,7 @@ export default function VideoShowcase() {
         video1: '',
         video2: ''
     })
+    const [videoErrors, setVideoErrors] = useState({})
     const [loading, setLoading] = useState(true)
     const scrollContainerRef = useRef(null)
     const autoScrollInterval = useRef(null)
@@ -157,15 +158,30 @@ export default function VideoShowcase() {
                                 style={{ animationDelay: `${index * 100}ms` }}
                             >
                                 <div className="group relative rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 bg-black">
-                                    <video
-                                        src={videoUrl}
-                                        controls
-                                        className="w-full h-[300px] md:h-[600px] object-contain"
-                                        preload="metadata"
-                                    >
-                                        Tu navegador no soporta el elemento de video.
-                                    </video>
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                                    {videoErrors[videoUrl] ? (
+                                        <div className="w-full h-[300px] md:h-[600px] flex items-center justify-center bg-gray-900 text-white p-6 text-center">
+                                            <div>
+                                                <p className="text-red-400 mb-2">Error al cargar el video</p>
+                                                <p className="text-xs text-gray-500 break-all">{videoUrl.split('/').pop()}</p>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <video
+                                            src={videoUrl}
+                                            controls
+                                            className="w-full h-[300px] md:h-[600px] object-contain"
+                                            preload="metadata"
+                                            onError={(e) => {
+                                                console.error(`Error loading video ${videoUrl}:`, e);
+                                                setVideoErrors(prev => ({ ...prev, [videoUrl]: true }));
+                                            }}
+                                        >
+                                            Tu navegador no soporta el elemento de video.
+                                        </video>
+                                    )}
+                                    {!videoErrors[videoUrl] && (
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                                    )}
                                 </div>
                             </div>
                         ))}
