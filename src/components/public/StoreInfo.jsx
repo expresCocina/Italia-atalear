@@ -147,6 +147,11 @@ export default function StoreInfo() {
                         <p className="text-sm text-gray-500">
                             © {new Date().getFullYear()} Italia Atelier. Todos los derechos reservados.
                         </p>
+                        <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-500">
+                            <span>
+                                Hecho con amor por <a href="https://wa.me/573138537261" target="_blank" rel="noopener noreferrer" className="hover:text-[#C9A961] transition-colors">Renting AMC Agency</a>
+                            </span>
+                        </div>
                         <div className="flex gap-6 text-sm">
                             <Link
                                 to="/terminos"
