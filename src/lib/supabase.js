@@ -39,6 +39,10 @@ export const signUp = async (email, password) => {
     const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+            // Redirigir explícitamente al login después de confirmar
+            emailRedirectTo: window.location.origin + '/login'
+        }
     })
     return { data, error }
 }

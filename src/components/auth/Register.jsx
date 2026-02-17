@@ -66,8 +66,10 @@ export default function Register() {
             // 3. Marcar como registrado en la tabla de whitelist
             await markAsRegistered(email)
 
-            setSuccess(true)
-            // Note: Dependiendo de la configuración de Supabase, podría requerir confirmación de email.
+            // Verificar si el usuario necesita confirmar el email
+            // Si no hay sesión inmediatamente, es probable que requiera confirmación
+            const needsConfirmation = !data.session;
+            setSuccess(needsConfirmation ? 'confirmation_pending' : 'success')
         } catch (err) {
             setError('Error de conexión. Intenta nuevamente.')
             console.error('Error de registro:', err)
@@ -79,13 +81,17 @@ export default function Register() {
     if (success) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-black p-4">
-                <div className="max-w-md w-full bg-white p-10 rounded-sm text-center space-y-6">
+                <div className="max-w-md w-full bg-white p-10 rounded-sm text-center space-y-6 animate-fade-in">
                     <div className="flex justify-center">
                         <CheckCircle2 className="w-16 h-16 text-green-500" />
                     </div>
-                    <h2 className="font-serif text-3xl text-gray-900">¡Registro Exitoso!</h2>
+                    <h2 className="font-serif text-3xl text-gray-900">
+                        {success === 'confirmation_pending' ? 'Verifica tu Correo' : '¡Registro Exitoso!'}
+                    </h2>
                     <p className="text-gray-600 font-light">
-                        Tu cuenta ha sido creada. Ahora puedes acceder al panel con tus credenciales.
+                        {success === 'confirmation_pending'
+                            ? 'Te hemos enviado un enlace de confirmación a tu correo electrónico. Por favor, revísalo para activar tu cuenta.'
+                            : 'Tu cuenta ha sido creada exitosamente. Ahora puedes acceder al panel.'}
                     </p>
                     <Link
                         to="/login"
