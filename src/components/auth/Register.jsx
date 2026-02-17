@@ -66,10 +66,13 @@ export default function Register() {
             // 3. Marcar como registrado en la tabla de whitelist
             await markAsRegistered(email)
 
-            // Verificar si el usuario necesita confirmar el email
-            // Si no hay sesión inmediatamente, es probable que requiera confirmación
-            const needsConfirmation = !data.session;
-            setSuccess(needsConfirmation ? 'confirmation_pending' : 'success')
+            // Si la confirmación de email está desactivada en Supabase, 
+            // signUp devolverá una sesión inmediatamente.
+            if (data.session) {
+                navigate('/admin')
+            } else {
+                setSuccess('confirmation_pending')
+            }
         } catch (err) {
             setError('Error de conexión. Intenta nuevamente.')
             console.error('Error de registro:', err)
