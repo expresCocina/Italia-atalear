@@ -41,7 +41,7 @@ export const signUp = async (email, password) => {
         password,
         options: {
             // Redirigir explícitamente al login después de confirmar
-            emailRedirectTo: window.location.origin + '/login'
+            emailRedirectTo: 'https://www.italiatelier.com/login'
         }
     })
     return { data, error }
