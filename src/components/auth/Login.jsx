@@ -26,7 +26,14 @@ export default function Login() {
             const { data, error } = await signIn(email, password)
 
             if (error) {
-                setError('Credenciales incorrectas. Verifica tu acceso.')
+                // Mensajes más descriptivos para depuración
+                if (error.message.includes('Email not confirmed')) {
+                    setError('Tu correo aún no ha sido confirmado. Revisa tu bandeja de entrada.')
+                } else if (error.message.includes('Invalid login credentials')) {
+                    setError('Credenciales incorrectas. Verifica tu correo y contraseña.')
+                } else {
+                    setError(error.message)
+                }
                 return
             }
 
