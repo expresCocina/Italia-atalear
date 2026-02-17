@@ -8,6 +8,7 @@ import { AuthProvider } from './context/AuthContext'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Login from './components/auth/Login'
+import Register from './components/auth/Register'
 import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
 import ProtectedRoute from './components/auth/ProtectedRoute'
@@ -20,6 +21,7 @@ function App() {
           {/* Rutas públicas */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/terminos" element={<Terms />} />
           <Route path="/privacidad" element={<Privacy />} />
 

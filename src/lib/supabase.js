@@ -33,6 +33,42 @@ export const signIn = async (email, password) => {
 }
 
 /**
+ * Registrar nuevo usuario (solo si el email está autorizado)
+ */
+export const signUp = async (email, password) => {
+    const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+    })
+    return { data, error }
+}
+
+/**
+ * Verificar si un email está en la lista de autorizados
+ */
+export const checkAuthorizedEmail = async (email) => {
+    const { data, error } = await supabase
+        .from('registros_autorizados')
+        .select('*')
+        .eq('email', email)
+        .maybeSingle()
+
+    return { data, error }
+}
+
+/**
+ * Marcar un email como ya registrado
+ */
+export const markAsRegistered = async (email) => {
+    const { error } = await supabase
+        .from('registros_autorizados')
+        .update({ registrado: true, updated_at: new Date() })
+        .eq('email', email)
+
+    return { error }
+}
+
+/**
  * Cerrar sesión
  */
 export const signOut = async () => {
