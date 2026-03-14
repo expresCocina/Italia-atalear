@@ -118,6 +118,8 @@ export default function ProductCard({ product }) {
                                         key={index}
                                         src={img}
                                         alt={`${product.nombre} - Imagen ${index + 1}`}
+                                        loading="lazy"
+                                        onError={(e) => { e.target.style.display = 'none' }}
                                         className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${index === currentImageIndex
                                             ? 'opacity-100 scale-100'
                                             : 'opacity-0 scale-105'
