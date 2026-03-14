@@ -1,12 +1,12 @@
 /**
  * Catalog
- * Catálogo dinámico de productos con scroll horizontal elegante
+ * Catálogo premium con grid masonry y filtros de categoría elegantes
  */
 
 import { useEffect, useState, useRef } from 'react'
 import { getActiveProducts, getActiveCategories } from '../../lib/supabase'
 import ProductCard from './ProductCard'
-import { Loader2, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Loader2, ChevronLeft, ChevronRight } from 'lucide-react'
 
 export default function Catalog() {
     const [products, setProducts] = useState([])
@@ -14,6 +14,7 @@ export default function Catalog() {
     const [selectedCategory, setSelectedCategory] = useState('all')
     const [loading, setLoading] = useState(true)
     const scrollContainerRef = useRef(null)
+    const filtersRef = useRef(null)
 
     useEffect(() => {
         loadData()
@@ -37,10 +38,8 @@ export default function Catalog() {
         } catch (error) {
             console.error(`Error al cargar catálogo (intento ${attempt}/3):`, error)
             if (attempt < 3) {
-                // Reintentar automáticamente después de 1.5 segundos
                 setTimeout(() => loadData(attempt + 1), 1500)
             } else {
-                // Fallido tras 3 intentos
                 setProducts([])
                 setCategories([])
                 setLoading(false)
@@ -56,140 +55,192 @@ export default function Catalog() {
         if (scrollContainerRef.current) {
             const scrollAmount = 400
             const newScrollPosition = scrollContainerRef.current.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount)
-            scrollContainerRef.current.scrollTo({
-                left: newScrollPosition,
-                behavior: 'smooth'
-            })
+            scrollContainerRef.current.scrollTo({ left: newScrollPosition, behavior: 'smooth' })
+        }
+    }
+
+    const scrollFilters = (direction) => {
+        if (filtersRef.current) {
+            filtersRef.current.scrollLeft += direction === 'left' ? -200 : 200
         }
     }
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white">
-                <div className="text-center">
-                    <Loader2 className="w-16 h-16 animate-spin text-gray-900 mx-auto mb-4" />
-                    <p className="text-gray-600 font-light tracking-wide">Cargando colección...</p>
+            <div className="min-h-[60vh] flex items-center justify-center bg-white">
+                <div className="text-center space-y-4">
+                    <div className="relative">
+                        <div className="w-16 h-16 border border-gray-200 rounded-full mx-auto flex items-center justify-center">
+                            <Loader2 className="w-7 h-7 animate-spin text-gray-400" />
+                        </div>
+                        <div className="absolute inset-0 w-16 h-16 border-t border-[#C9A961] rounded-full mx-auto animate-spin" style={{ animationDuration: '2s' }}></div>
+                    </div>
+                    <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-light">Cargando colección</p>
                 </div>
             </div>
         )
     }
 
     return (
-        <section id="catalogo" className="py-24 px-4 bg-gradient-to-b from-white via-gray-50 to-white">
-            <div className="max-w-[1600px] mx-auto">
-                {/* Encabezado de sección */}
-                <div className="text-center mb-16">
-                    <div className="flex items-center justify-center gap-3 mb-4">
-                        <Sparkles className="w-5 h-5 text-gray-400" />
-                        <span className="text-sm uppercase tracking-widest text-gray-500 font-light">Colección</span>
-                        <Sparkles className="w-5 h-5 text-gray-400" />
-                    </div>
-
-                    <h2 className="text-5xl md:text-6xl font-serif mb-6 text-gray-900 tracking-wide">
+        <section id="catalogo" className="py-24 bg-white">
+            {/* Header elegante */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+                <div className="text-center">
+                    <p className="text-[10px] uppercase tracking-[0.5em] text-[#C9A961] font-light mb-4">
+                        Colección Exclusiva
+                    </p>
+                    <h2 className="font-serif text-5xl md:text-6xl text-gray-900 mb-5">
                         Nuestro Catálogo
                     </h2>
-
-                    <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-gray-400 to-transparent mx-auto mb-6"></div>
-
-                    <p className="text-gray-600 max-w-2xl mx-auto font-light text-lg leading-relaxed">
-                        Descubre nuestra colección de prendas hechas a medida con la más alta calidad
+                    <div className="flex items-center justify-center gap-4">
+                        <div className="h-px bg-gray-200 w-16"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#C9A961]"></div>
+                        <div className="h-px bg-gray-200 w-16"></div>
+                    </div>
+                    <p className="mt-6 text-gray-500 font-light max-w-xl mx-auto leading-relaxed">
+                        Prendas hechas a medida con la más alta calidad y distinción
                     </p>
                 </div>
+            </div>
 
-                {/* Filtros de categoría - MEJORADO PARA MÓVIL */}
-                {categories.length > 0 && (
-                    <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-16 px-2">
-                        <button
-                            onClick={() => setSelectedCategory('all')}
-                            className={`px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 transition-all duration-400 uppercase text-xs sm:text-sm tracking-wider sm:tracking-widest font-light rounded-md ${selectedCategory === 'all'
-                                ? 'bg-black text-white shadow-lg'
-                                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-                                }`}
-                        >
-                            Todos
-                        </button>
-                        {categories.map((category) => (
+            {/* Filtros de categoría — scroll horizontal elegante */}
+            {categories.length > 0 && (
+                <div className="relative mb-14 border-y border-gray-100">
+                    {/* Scroll izquierda (móvil) */}
+                    <button
+                        onClick={() => scrollFilters('left')}
+                        className="absolute left-0 top-0 bottom-0 z-10 px-2 bg-gradient-to-r from-white to-transparent md:hidden"
+                        aria-label="Scroll izquierda"
+                    >
+                        <ChevronLeft className="w-4 h-4 text-gray-400" />
+                    </button>
+
+                    <div
+                        ref={filtersRef}
+                        className="flex items-center overflow-x-auto scrollbar-hide"
+                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    >
+                        <div className="flex mx-auto">
+                            {/* Botón Todos */}
                             <button
-                                key={category.id}
-                                onClick={() => setSelectedCategory(category.id)}
-                                className={`px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 transition-all duration-400 uppercase text-xs sm:text-sm tracking-wider sm:tracking-widest font-light rounded-md ${selectedCategory === category.id
-                                    ? 'bg-black text-white shadow-lg'
-                                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-                                    }`}
+                                onClick={() => setSelectedCategory('all')}
+                                className={`
+                                    relative px-7 py-5 text-[11px] uppercase tracking-[0.2em] font-light whitespace-nowrap transition-all duration-300
+                                    ${selectedCategory === 'all'
+                                        ? 'text-gray-900'
+                                        : 'text-gray-400 hover:text-gray-600'
+                                    }
+                                `}
                             >
-                                <span className="hidden sm:inline">{category.nombre}</span>
-                                <span className="sm:hidden">{category.nombre.split(' ')[0]}</span>
+                                Todos
+                                {selectedCategory === 'all' && (
+                                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-px bg-[#C9A961]"></span>
+                                )}
                             </button>
-                        ))}
-                    </div>
-                )}
 
-                {/* Carrusel de productos */}
-                {filteredProducts.length > 0 ? (
-                    <div className="relative group">
-                        {/* Botón Izquierda */}
-                        <button
-                            onClick={() => scroll('left')}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-xl hover:bg-white transition-all opacity-0 group-hover:opacity-100 hover:scale-110 -translate-x-4 group-hover:translate-x-0"
-                            aria-label="Anterior"
-                        >
-                            <ChevronLeft className="w-6 h-6 text-gray-900" />
-                        </button>
+                            {/* Divisor */}
+                            <div className="w-px bg-gray-100 self-stretch my-3"></div>
 
-                        {/* Contenedor de scroll */}
-                        <div
-                            ref={scrollContainerRef}
-                            className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-4"
-                            style={{
-                                scrollbarWidth: 'none',
-                                msOverflowStyle: 'none',
-                            }}
-                        >
-                            {filteredProducts.map((product, index) => (
-                                <div
-                                    key={product.id}
-                                    className="flex-shrink-0 w-[280px] animate-fade-in-up"
-                                    style={{ animationDelay: `${index * 100}ms` }}
-                                >
-                                    <ProductCard product={product} />
+                            {categories.map((category, i) => (
+                                <div key={category.id} className="flex items-center">
+                                    <button
+                                        onClick={() => setSelectedCategory(category.id)}
+                                        className={`
+                                            relative px-7 py-5 text-[11px] uppercase tracking-[0.2em] font-light whitespace-nowrap transition-all duration-300
+                                            ${selectedCategory === category.id
+                                                ? 'text-gray-900'
+                                                : 'text-gray-400 hover:text-gray-600'
+                                            }
+                                        `}
+                                    >
+                                        {category.nombre}
+                                        {selectedCategory === category.id && (
+                                            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-px bg-[#C9A961]"></span>
+                                        )}
+                                    </button>
+                                    {i < categories.length - 1 && (
+                                        <div className="w-px bg-gray-100 self-stretch my-3"></div>
+                                    )}
                                 </div>
                             ))}
                         </div>
+                    </div>
 
-                        {/* Botón Derecha */}
-                        <button
-                            onClick={() => scroll('right')}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-xl hover:bg-white transition-all opacity-0 group-hover:opacity-100 hover:scale-110 translate-x-4 group-hover:translate-x-0"
-                            aria-label="Siguiente"
-                        >
-                            <ChevronRight className="w-6 h-6 text-gray-900" />
-                        </button>
+                    {/* Scroll derecha (móvil) */}
+                    <button
+                        onClick={() => scrollFilters('right')}
+                        className="absolute right-0 top-0 bottom-0 z-10 px-2 bg-gradient-to-l from-white to-transparent md:hidden"
+                        aria-label="Scroll derecha"
+                    >
+                        <ChevronRight className="w-4 h-4 text-gray-400" />
+                    </button>
+                </div>
+            )}
 
-                        {/* Indicador de scroll */}
-                        <div className="flex justify-center gap-2 mt-8">
-                            <div className="text-xs text-gray-400 flex items-center gap-2">
-                                <ChevronLeft className="w-3 h-3" />
-                                <span>Desliza para ver más</span>
-                                <ChevronRight className="w-3 h-3" />
+            {/* Carrusel de productos */}
+            {filteredProducts.length > 0 ? (
+                <div className="relative group max-w-[1700px] mx-auto px-4 sm:px-8">
+                    {/* Botón Izquierda */}
+                    <button
+                        onClick={() => scroll('left')}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white border border-gray-200 flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 hover:border-gray-400 hover:shadow-lg"
+                        aria-label="Anterior"
+                    >
+                        <ChevronLeft className="w-5 h-5 text-gray-600" />
+                    </button>
+
+                    {/* Contenedor scroll */}
+                    <div
+                        ref={scrollContainerRef}
+                        className="flex gap-5 overflow-x-auto scroll-smooth"
+                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    >
+                        {filteredProducts.map((product, index) => (
+                            <div
+                                key={product.id}
+                                className="flex-shrink-0 w-[300px] md:w-[320px] animate-fade-in-up"
+                                style={{ animationDelay: `${index * 80}ms` }}
+                            >
+                                <ProductCard product={product} />
                             </div>
-                        </div>
+                        ))}
                     </div>
-                ) : (
-                    <div className="text-center py-24">
-                        <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <Sparkles className="w-10 h-10 text-gray-400" />
-                        </div>
-                        <p className="text-gray-500 text-lg font-light tracking-wide">
-                            No hay productos disponibles en esta categoría
-                        </p>
-                    </div>
-                )}
-            </div>
 
-            <style jsx>{`
-                .scrollbar-hide::-webkit-scrollbar {
-                    display: none;
-                }
+                    {/* Botón Derecha */}
+                    <button
+                        onClick={() => scroll('right')}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white border border-gray-200 flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 hover:border-gray-400 hover:shadow-lg"
+                        aria-label="Siguiente"
+                    >
+                        <ChevronRight className="w-5 h-5 text-gray-600" />
+                    </button>
+
+                    {/* Indicador de scroll desliza */}
+                    <div className="flex items-center justify-center gap-2 mt-10 text-gray-300">
+                        <ChevronLeft className="w-3 h-3" />
+                        <span className="text-[10px] uppercase tracking-widest">Desliza para explorar</span>
+                        <ChevronRight className="w-3 h-3" />
+                    </div>
+                </div>
+            ) : (
+                <div className="text-center py-32 max-w-sm mx-auto">
+                    <div className="w-16 h-16 border border-gray-100 flex items-center justify-center mx-auto mb-6">
+                        <div className="w-6 h-6 border border-gray-300 rotate-45"></div>
+                    </div>
+                    <p className="text-gray-400 font-light tracking-wide text-sm">
+                        No hay prendas disponibles en esta categoría
+                    </p>
+                    <button
+                        onClick={() => setSelectedCategory('all')}
+                        className="mt-6 text-xs uppercase tracking-widest text-gray-400 underline underline-offset-4 hover:text-gray-600 transition-colors"
+                    >
+                        Ver toda la colección
+                    </button>
+                </div>
+            )}
+
+            <style>{`
+                .scrollbar-hide::-webkit-scrollbar { display: none; }
             `}</style>
         </section>
     )
