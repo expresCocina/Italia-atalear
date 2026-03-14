@@ -19,25 +19,32 @@ export default function Catalog() {
         loadData()
     }, [])
 
-    const loadData = async () => {
-        setLoading(true)
+    const loadData = async (attempt = 1) => {
+        if (attempt === 1) setLoading(true)
         try {
             const [productsResult, categoriesResult] = await Promise.all([
                 getActiveProducts(),
                 getActiveCategories()
             ])
 
-            if (productsResult.data) {
-                setProducts(productsResult.data)
-            }
+            if (productsResult.error) throw productsResult.error
+            if (categoriesResult.error) throw categoriesResult.error
 
-            if (categoriesResult.data) {
-                setCategories(categoriesResult.data)
-            }
-        } catch (error) {
-            console.error('Error al cargar datos:', error)
-        } finally {
+            if (productsResult.data) setProducts(productsResult.data)
+            if (categoriesResult.data) setCategories(categoriesResult.data)
+
             setLoading(false)
+        } catch (error) {
+            console.error(`Error al cargar catálogo (intento ${attempt}/3):`, error)
+            if (attempt < 3) {
+                // Reintentar automáticamente después de 1.5 segundos
+                setTimeout(() => loadData(attempt + 1), 1500)
+            } else {
+                // Fallido tras 3 intentos
+                setProducts([])
+                setCategories([])
+                setLoading(false)
+            }
         }
     }
 
