@@ -6,6 +6,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
+import SEO from '../components/SEO'
 
 export default function Terms() {
     useEffect(() => {
@@ -14,6 +15,11 @@ export default function Terms() {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            <SEO 
+                title="Términos y Condiciones | Italia Atelier" 
+                description="Términos y condiciones de los servicios de sastrería de Italia Atelier. Información sobre pedidos, pagos y devoluciones."
+                url="https://www.italiatelier.com/terminos"
+            />
             {/* Header */}
             <div className="bg-white border-b border-gray-200">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

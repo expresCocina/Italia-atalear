@@ -6,6 +6,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Shield } from 'lucide-react'
+import SEO from '../components/SEO'
 
 export default function Privacy() {
     useEffect(() => {
@@ -14,6 +15,11 @@ export default function Privacy() {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            <SEO 
+                title="Política de Privacidad | Italia Atelier" 
+                description="Política de privacidad y tratamiento de datos personales de Italia Atelier. Conoce cómo protegemos tu información."
+                url="https://www.italiatelier.com/privacidad"
+            />
             {/* Header */}
             <div className="bg-white border-b border-gray-200">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
